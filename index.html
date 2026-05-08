@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bluewave School is a modern single-page school website template built with HTML, CSS, and JavaScript.">
+  <title>Bluewave School</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f8ff;
+      --surface: rgba(255, 255, 255, 0.9);
+      --surface-strong: #ffffff;
+      --text: #183153;
+      --muted: #5e6c84;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #0f172a;
+      --border: rgba(37, 99, 235, 0.12);
+      --shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+      --radius: 24px;
+      --max-width: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.16), transparent 26%),
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.18), transparent 24%),
+        var(--bg);
+      line-height: 1.6;
+    }
+
+    body.dark-mode {
+      color-scheme: dark;
+      --bg: #08111f;
+      --surface: rgba(15, 23, 42, 0.88);
+      --surface-strong: #0f172a;
+      --text: #e5eefc;
+      --muted: #9db2d5;
+      --primary: #60a5fa;
+      --primary-dark: #93c5fd;
+      --accent: #dbeafe;
+      --border: rgba(147, 197, 253, 0.16);
+      --shadow: 0 20px 45px rgba(2, 6, 23, 0.45);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, textarea { font: inherit; }
+
+    .container {
+      width: min(calc(100% - 2rem), var(--max-width));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--surface-strong) 80%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-shell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--primary);
+      outline: none;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .icon-btn,
+    .primary-btn,
+    .secondary-btn {
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .icon-btn {
+      width: 2.75rem;
+      height: 2.75rem;
+      background: var(--surface);
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      padding: 0.85rem 1.3rem;
+      font-weight: 700;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .secondary-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .icon-btn:hover,
+    .primary-btn:hover,
+    .secondary-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .menu-btn { display: none; }
+
+    .hero {
+      padding: 5rem 0 3rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      font-size: clamp(2.6rem, 5vw, 4.6rem);
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 55ch;
+    }
+
+    .hero-card,
+    .info-card,
+    .feature-card,
+    .gallery-card,
+    .contact-card,
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 1.25rem;
+    }
+
+    .hero-art {
+      padding: 1rem;
+      border-radius: calc(var(--radius) - 6px);
+      background: linear-gradient(145deg, rgba(37, 99, 235, 0.08), rgba(14, 165, 233, 0.12));
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      padding: 1rem 1.1rem;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.6rem;
+      margin-bottom: 0.25rem;
+    }
+
+    section {
+      padding: 2rem 0 4rem;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-head p {
+      max-width: 52ch;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    .grid-3,
+    .gallery-grid,
+    .contact-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .contact-grid { grid-template-columns: 1.1fr 0.9fr; }
+
+    .info-card,
+    .feature-card,
+    .gallery-card,
+    .contact-card {
+      padding: 1.35rem;
+    }
+
+    .card-icon {
+      width: 3rem;
+      height: 3rem;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: rgba(37, 99, 235, 0.12);
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card ul {
+      padding-left: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    .gallery-card img {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: calc(var(--radius) - 8px);
+      margin-bottom: 1rem;
+    }
+
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 0;
+      color: var(--muted);
+    }
+
+    .contact-list li + li { margin-top: 0.5rem; }
+
+    form {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    label {
+      display: grid;
+      gap: 0.4rem;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 0.9rem 1rem;
+      background: var(--surface-strong);
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .field-error {
+      font-size: 0.88rem;
+      color: #dc2626;
+      min-height: 1rem;
+    }
+
+    .success-message {
+      display: none;
+      padding: 0.85rem 1rem;
+      border-radius: 16px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #15803d;
+      font-weight: 700;
+    }
+
+    .success-message.show { display: block; }
+
+    footer {
+      padding: 1rem 0 2.5rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .contact-grid,
+      .grid-3,
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .section-head {
+        flex-direction: column;
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .menu-btn { display: inline-grid; place-items: center; }
+
+      nav {
+        position: fixed;
+        inset: 5.4rem 1rem auto;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
+        border-radius: 24px;
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+
+      nav.open { display: flex; }
+      .nav-links,
+      .nav-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .stats { grid-template-columns: 1fr; }
+      .hero { padding-top: 3rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav-shell">
+      <a class="brand" href="#home" aria-label="Bluewave School home">
+        <span class="brand-mark">🎓</span>
+        <span>Bluewave School</span>
+      </a>
+      <button class="icon-btn menu-btn" id="menu-button" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <nav id="site-nav">
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#programs">Programs</a></li>
+          <li><a href="#campus">Campus</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+          <a class="primary-btn" href="#contact">Book a Visit</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">✨ Future-ready learning community</span>
+          <h1>Learn with curiosity, lead with confidence.</h1>
+          <p>
+            Bluewave School is a modern school website template for classrooms, portfolios, and student web design showcases. It blends a clean visual style with responsive design and lightweight interactivity.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#programs">Explore Programs</a>
+            <a class="secondary-btn" href="#about">Why Families Choose Us</a>
+          </div>
+          <div class="stats">
+            <article class="stat-card">
+              <strong>1,200+</strong>
+              <span>Students empowered through project-based learning</span>
+            </article>
+            <article class="stat-card">
+              <strong>98%</strong>
+              <span>Parent satisfaction with communication and support</span>
+            </article>
+            <article class="stat-card">
+              <strong>35</strong>
+              <span>Student clubs, sports, and leadership pathways</span>
+            </article>
+          </div>
+        </div>
+        <div class="hero-card reveal">
+          <div class="hero-art">
+            <img src="assets/hero-illustration.svg" alt="Students learning together in a modern school environment">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">About Bluewave</span>
+            <h2>Academic excellence with creativity, care, and character.</h2>
+          </div>
+          <p>
+            Designed as a single-file front-end project, this site showcases how a polished school landing page can be built with semantic HTML, flexible CSS layouts, and simple JavaScript behaviors.
+          </p>
+        </div>
+        <div class="grid-3">
+          <article class="info-card reveal">
+            <div class="card-icon">📚</div>
+            <h3>Strong Foundations</h3>
+            <p>Balanced academics build literacy, numeracy, problem-solving, and communication in every grade.</p>
+          </article>
+          <article class="info-card reveal">
+            <div class="card-icon">🧪</div>
+            <h3>Hands-on Discovery</h3>
+            <p>Labs, projects, and collaborative challenges help students connect ideas with real-world experience.</p>
+          </article>
+          <article class="info-card reveal">
+            <div class="card-icon">🌍</div>
+            <h3>Whole-child Growth</h3>
+            <p>Arts, athletics, service, and mentoring support leadership, confidence, and a global outlook.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="programs">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Programs</span>
+            <h2>Pathways that inspire every learner.</h2>
+          </div>
+          <p>Each feature card demonstrates reusable content blocks that are easy to edit and expand for a real school website.</p>
+        </div>
+        <div class="grid-3">
+          <article class="feature-card reveal">
+            <div class="card-icon">💡</div>
+            <h3>Innovation Lab</h3>
+            <ul>
+              <li>Robotics, coding, and maker challenges</li>
+              <li>Collaborative problem-solving projects</li>
+              <li>Presentation-driven learning outcomes</li>
+            </ul>
+          </article>
+          <article class="feature-card reveal">
+            <div class="card-icon">🎨</div>
+            <h3>Creative Arts</h3>
+            <ul>
+              <li>Visual arts, music, drama, and design</li>
+              <li>Student showcases and performances</li>
+              <li>Confidence-building public expression</li>
+            </ul>
+          </article>
+          <article class="feature-card reveal">
+            <div class="card-icon">🏅</div>
+            <h3>Leadership & Sports</h3>
+            <ul>
+              <li>Clubs, athletics, and wellness programs</li>
+              <li>Teamwork and resilience development</li>
+              <li>Mentorship and service opportunities</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="campus">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Campus life</span>
+            <h2>Flexible gallery cards powered by local assets.</h2>
+          </div>
+          <p>The assets folder keeps the project organized while the page stays dependency-free and simple to deploy.</p>
+        </div>
+        <div class="gallery-grid">
+          <article class="gallery-card reveal">
+            <img src="assets/gallery-learning.svg" alt="Illustration of students learning in a classroom">
+            <h3>Interactive Classrooms</h3>
+            <p>Responsive card layout with local SVG artwork for quick loading and easy customization.</p>
+          </article>
+          <article class="gallery-card reveal">
+            <img src="assets/gallery-library.svg" alt="Illustration of a modern school library">
+            <h3>Reading & Research</h3>
+            <p>Accessible typography and structured content make the project beginner-friendly and professional.</p>
+          </article>
+          <article class="gallery-card reveal">
+            <img src="assets/gallery-community.svg" alt="Illustration of a school community event">
+            <h3>Community Spirit</h3>
+            <p>Sections are intentionally modular so you can swap text, imagery, and calls to action in minutes.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Contact</span>
+            <h2>Simple validation for a polished front-end demo.</h2>
+          </div>
+          <p>This contact form demonstrates client-side validation and success feedback without any back-end dependency.</p>
+        </div>
+        <div class="contact-grid">
+          <article class="contact-card reveal">
+            <h3>Visit the campus</h3>
+            <p>12 Learning Avenue, Sunrise District, Ahmedabad</p>
+            <ul class="contact-list">
+              <li><strong>Email:</strong> hello@bluewaveschool.example</li>
+              <li><strong>Phone:</strong> +91 99999 88888</li>
+              <li><strong>Hours:</strong> Monday to Friday, 8:00 AM to 4:00 PM</li>
+            </ul>
+          </article>
+          <article class="contact-card reveal">
+            <form id="contact-form" novalidate>
+              <label>
+                Full name
+                <input id="name" name="name" type="text" placeholder="Enter your name">
+                <span class="field-error" id="name-error"></span>
+              </label>
+              <label>
+                Email address
+                <input id="email" name="email" type="email" placeholder="Enter your email">
+                <span class="field-error" id="email-error"></span>
+              </label>
+              <label>
+                Message
+                <textarea id="message" name="message" placeholder="Tell us what you would like to know"></textarea>
+                <span class="field-error" id="message-error"></span>
+              </label>
+              <button class="primary-btn" type="submit">Send enquiry</button>
+              <div class="success-message" id="success-message">Thanks for reaching out! We will get back to you soon.</div>
+            </form>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> Bluewave School. Built as a clean single-page school website project.</p>
+    </div>
+  </footer>
+
+  <script>
+    const body = document.body;
+    const nav = document.getElementById('site-nav');
+    const menuButton = document.getElementById('menu-button');
+    const themeToggle = document.getElementById('theme-toggle');
+    const form = document.getElementById('contact-form');
+    const successMessage = document.getElementById('success-message');
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    menuButton.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(open));
+    });
+
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        menuButton.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    const applyTheme = (mode) => {
+      body.classList.toggle('dark-mode', mode === 'dark');
+      themeToggle.textContent = mode === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('bluewave-theme', mode);
+    };
+
+    applyTheme(localStorage.getItem('bluewave-theme') || 'light');
+    themeToggle.addEventListener('click', () => {
+      applyTheme(body.classList.contains('dark-mode') ? 'light' : 'dark');
+    });
+
+    const setError = (id, message) => {
+      document.getElementById(id).textContent = message;
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      let valid = true;
+
+      setError('name-error', '');
+      setError('email-error', '');
+      setError('message-error', '');
+      successMessage.classList.remove('show');
+
+      if (!name) {
+        setError('name-error', 'Please enter your full name.');
+        valid = false;
+      }
+
+      if (!email) {
+        setError('email-error', 'Please enter your email address.');
+        valid = false;
+      } else if (!emailPattern.test(email)) {
+        setError('email-error', 'Please enter a valid email address.');
+        valid = false;
+      }
+
+      if (!message) {
+        setError('message-error', 'Please add a short message.');
+        valid = false;
+      }
+
+      if (!valid) {
+        return;
+      }
+
+      successMessage.classList.add('show');
+      form.reset();
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+  </script>
+</body>
+</html>
